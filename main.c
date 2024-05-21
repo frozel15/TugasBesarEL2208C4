@@ -385,6 +385,7 @@ int main() {
     printf("6. Greedy\n" reset);
     scanf("%d", &menu);
 
+    int mode;
     clock_t start_time, end_time;
     double time_spent;
     system("cls");
@@ -398,7 +399,6 @@ int main() {
             main_dfs(namafile, start_time);
             break;
         case 3:
-            int mode;
             do {
                 printf(BRED "Algoritma Maze Solver Kelompok C4\n" BWHT);
                 printf(GRN "Pilih mode:\n" BWHT);

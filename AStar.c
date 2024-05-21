@@ -72,9 +72,9 @@ void printMaze(char **maze, int baris, int kolom, Point_Astar path[], int path_l
 }
 
 // Fungsi untuk mencari jalur terpendek menggunakan algoritma A-Star
-void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end, clock_t startshortest)
+void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end, clock_t start_shortest)
 {
-    clock_t endshortest;
+    clock_t startshortest, endshortest;
     double cpu_time_used_shortest;
 
     startshortest = clock();
@@ -153,7 +153,7 @@ void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start
     endshortest = clock();
 
     cpu_time_used_shortest = ((double)(endshortest - startshortest)) / CLOCKS_PER_SEC;
-    printf("\nWaktu : %.100f detik", cpu_time_used_shortest);
+    printf("\nWaktu : %f detik", cpu_time_used_shortest);
 
     printf("\nJalur terpendek : \n");
     if (currentNode && isDestination(currentNode->point, end))
@@ -170,16 +170,18 @@ void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start
         printMaze(maze, baris, kolom, path, path_length);
 
         // Print jalur dengan posisi
-        printf("Jalur terpendek : \n");
+        int jumlahShortest = 0;
+        printf("Jalur terpendek : ");
         for (int i = path_length - 1; i >= 0; i--)
         {
             printf("(%d, %d)", path[i].x, path[i].y);
+            jumlahShortest++;
             if (i > 0)
             {
                 printf(" -> ");
             }
         }
-        printf("\n");
+        printf("\nTotalnya: %d\n", jumlahShortest - 1);
     }
     else
     {
@@ -193,9 +195,9 @@ void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start
 }
 
 // Fungsi untuk mencari jalur terjauh menggunakan algoritma A-Star
-void findLongestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end, clock_t startlongest)
+void findLongestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end, clock_t start_longest)
 {
-    clock_t endlongest;
+    clock_t startlongest, endlongest;
     double cpu_time_used_longest;
 
     startlongest = clock();
@@ -274,7 +276,7 @@ void findLongestPath_Astar(char **maze, int baris, int kolom, Point_Astar start,
     endlongest = clock();
 
     cpu_time_used_longest = ((double)(endlongest - startlongest)) / CLOCKS_PER_SEC;
-    printf("\nWaktu : %.100f detik", cpu_time_used_longest);
+    printf("\nWaktu : %f detik", cpu_time_used_longest);
 
     printf("\nJalur terjauh : \n");
     if (currentNode && isDestination(currentNode->point, end))
@@ -291,16 +293,18 @@ void findLongestPath_Astar(char **maze, int baris, int kolom, Point_Astar start,
         printMaze(maze, baris, kolom, path, path_length);
 
         // Print jalur dengan posisi
+        int jumlahLongest = 0;
         printf("Jalur terjauh : ");
         for (int i = path_length - 1; i >= 0; i--)
         {
             printf("(%d, %d)", path[i].x, path[i].y);
+            jumlahLongest++;
             if (i > 0)
             {
                 printf(" -> ");
             }
         }
-        printf("\n");
+        printf("\nTotalnya: %d\n", jumlahLongest - 1);
     }
     else
     {
