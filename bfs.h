@@ -8,7 +8,7 @@
 #include <time.h>
 #include <conio.h>
 
-#define MAX 100
+#define MAX 255
 
 /** Koordinat untuk maze.
  * @param x titik x.
@@ -184,5 +184,5 @@ void writePathToFile(FILE *file, Node *node);
  * @param end titik akhir.
  * @param mode mode operasi fungsi.
 */
-void solveBFS(Queue *queue, int **maze, int row, int column, Coords end, int mode);
+void solveBFS(Queue *queue, int **maze, int row, int column, Coords end, int mode, clock_t start_time);
 #endif

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define MAX 100
+#define MAX 255
 
 int found = 0;
 int pathquantity = 0;
@@ -86,7 +86,7 @@ void findRoute(char labirin [MAX] [MAX], int x, int y, int counter, int baris, i
     findRoute(labirin , x, y-1, counter+1, baris, kolom);
 }
 
-void tracing(char labirin[MAX][MAX], int x, int y, int baris, int kolom) {
+void tracing(char labirin[MAX][MAX], int x, int y, int baris, int kolom, int length) {
     int min = 99999;
 
     if (labirin[y][x] == -3) {
@@ -94,7 +94,7 @@ void tracing(char labirin[MAX][MAX], int x, int y, int baris, int kolom) {
     }
 
     if (labirin[y][x] == 1) {
-        printf("(%d, %d)\n", y, x);
+        printf("(%d, %d)\nLength = %d\n", y, x, length);
         found = 1;
         return;
     }
@@ -122,13 +122,13 @@ void tracing(char labirin[MAX][MAX], int x, int y, int baris, int kolom) {
     }
 
     if (min == labirin[y][x+1] && found == 0) {
-        tracing(labirin, x+1, y, baris, kolom);
+        tracing(labirin, x+1, y, baris, kolom, length+1);
     } else if (min == labirin[y][x-1] && found == 0) {
-        tracing(labirin, x-1, y, baris, kolom);
+        tracing(labirin, x-1, y, baris, kolom, length+1);
     } else if (min == labirin[y+1][x] && found == 0) {
-        tracing(labirin, x, y+1, baris, kolom);
+        tracing(labirin, x, y+1, baris, kolom, length+1);
     } else if (min == labirin[y-1][x] && found == 0) {
-        tracing(labirin, x, y-1, baris, kolom);
+        tracing(labirin, x, y-1, baris, kolom, length+1);
     }
 }
 

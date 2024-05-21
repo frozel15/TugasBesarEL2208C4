@@ -72,9 +72,9 @@ void printMaze(char **maze, int baris, int kolom, Point_Astar path[], int path_l
 }
 
 // Fungsi untuk mencari jalur terpendek menggunakan algoritma A-Star
-void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end)
+void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end, clock_t startshortest)
 {
-    clock_t startshortest, endshortest;
+    clock_t endshortest;
     double cpu_time_used_shortest;
 
     startshortest = clock();
@@ -193,9 +193,9 @@ void findshortestPath_Astar(char **maze, int baris, int kolom, Point_Astar start
 }
 
 // Fungsi untuk mencari jalur terjauh menggunakan algoritma A-Star
-void findLongestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end)
+void findLongestPath_Astar(char **maze, int baris, int kolom, Point_Astar start, Point_Astar end, clock_t startlongest)
 {
-    clock_t startlongest, endlongest;
+    clock_t endlongest;
     double cpu_time_used_longest;
 
     startlongest = clock();

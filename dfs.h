@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#define MAX 100
+#define MAX 255
 
 extern int found;
 extern int pathquantity;
@@ -14,7 +14,7 @@ bool bacaLabirin(char *namaFile, char labirin[MAX][MAX], int *baris, int *kolom)
 void resetMap(char labirin[MAX][MAX]);
 void printMap(char labirin[MAX][MAX], int kolom, int baris);
 void findRoute(char labirin[MAX][MAX], int x, int y, int counter, int baris, int kolom);
-void tracing(char labirin[MAX][MAX], int x, int y, int baris, int kolom);
+void tracing(char labirin[MAX][MAX], int x, int y, int baris, int kolom, int length);
 void tracingAllPaths(char labirin[MAX][MAX], int x, int y, int baris, int kolom, int path[MAX][MAX], int idx);
 void findLongestPath(char labirin[MAX][MAX], int x, int y, int baris, int kolom, int path[MAX][MAX], int idx);
 

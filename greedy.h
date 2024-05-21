@@ -2,7 +2,7 @@
 #ifndef GREEDY_H
 #define GREEDY_H
 
-#define MAX 100
+#define MAX 255
 
 typedef struct {
     int x, y;

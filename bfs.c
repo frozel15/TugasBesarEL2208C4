@@ -31,64 +31,45 @@ QueueNode* dequeue(Queue* queue) {
 int getRowColumn(const char *filename, int *row, int *column) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf("File gagal dibuka.");
+        printf("File gagal dibuka.\n");
         return 1;
     }
+
+    *row = 0;
+    *column = 0;
     char line[MAX];
     while (fgets(line, MAX, file)) {
         (*row)++;
-        if ((*column) == 0) {
-            while(line[*column] != '\n' && line[*column] != '\0') {
-                switch (line[*column]) {
-                    case 'S':
-                        break;
-                    case 'E':
-                        break;
-                    case '#':
-                        break;
-                    case '.':
-                        break;
-                    default:
-                        printf("Terdapat elemen lain di maze.");
-                        fclose(file);
-                        return 1;
-                }
-                (*column)++;
-            }
-        } else {
-            int length = strlen(line)-1;
-            if (length != (*column)) {
-                if (length == (*column)-1) {
-                    if (line[length] == line[(*column)-1]) {
-                        switch (line[*column-1]) {
-                            case 'S':
-                                break;
-                            case 'E':
-                                break;
-                            case '#':
-                                break;
-                            case '.':
-                                break;
-                            default:
-                                printf("%d %d\n", line[length], line[*column]);
-                                printf("Terdapat elemen lain di maze.");
-                                fclose(file);
-                                return 1;
-                        }
-                        continue;
-                    } else {
-                        printf("Maze bukan mxn.");
-                        fclose(file);
-                        return 1;
-                    }
-                }
-                printf("Maze bukan mxn.");
-                fclose(file);
-                return 1;
+        int length = strlen(line);
+        if (line[length - 1] == '\n') {
+            line[length - 1] = '\0';
+            length--;
+        }
+
+        if (*column == 0) {
+            *column = length;
+        } else if (length != *column) {
+            printf("Maze bukan mxn.\n");
+            fclose(file);
+            return 1;
+        }
+
+        for (int i = 0; i < length; i++) {
+            switch (line[i]) {
+                case 'S':
+                case 'E':
+                case '#':
+                case '.':
+                    break;
+                default:
+                    printf("Terdapat elemen lain di maze.\n");
+                    fclose(file);
+                    return 1;
             }
         }
     }
     fclose(file);
+    return 0;
 }
 
 void initializeMaze(int ***maze, int row, int column) {
@@ -283,16 +264,15 @@ void writePathToFile(FILE *file, Node *node) {
     fprintf(file, "(%d, %d) -> ", node->pos.x, node->pos.y);
 }
 
-void solveBFS(Queue *queue, int **maze, int row, int column, Coords end, int mode) {
+void solveBFS(Queue *queue, int **maze, int row, int column, Coords end, int mode, clock_t start_time) {
     FILE *allPath = fopen("allPath.txt", "w");
     fprintf(allPath, "");
     fclose(allPath);
 
     allPath = fopen("allPath.txt", "a");
     int shortest = 0, count = 0;
-    clock_t start_time, s_time, l_time;
+    clock_t s_time, l_time;
     double time_spent;
-    start_time = clock();
     Node *last = NULL;
     if (mode == 1) {
         while (!isQueueEmpty(queue)) {

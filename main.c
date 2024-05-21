@@ -10,7 +10,7 @@
 #include "Dijkstra.h"
 #include "greedy.h"
 
-int main_astar(char *namaFile) {
+int main_astar(char *namaFile, clock_t start_shortest) {
     // char namaFile[100];
     // printf("Masukkan nama file: ");
     // scanf("%s", namaFile);
@@ -57,10 +57,10 @@ int main_astar(char *namaFile) {
     }
 
     // Fungsi mencari shortest path dengan A-Star
-    findshortestPath_Astar(matriks, baris, kolom, start, end);
+    findshortestPath_Astar(matriks, baris, kolom, start, end, start_shortest);
 
     // Fungsi mencari longest path dengan A-Star
-    findLongestPath_Astar(matriks, baris, kolom, start, end);
+    findLongestPath_Astar(matriks, baris, kolom, start, end, start_shortest);
 
     // Membebaskan memori matriks
     for (int i = 0; i < baris; i++)
@@ -70,14 +70,12 @@ int main_astar(char *namaFile) {
     free(matriks);
 }
 
-int main_backtracking(char *fileMaze) {
+int main_backtracking(char *fileMaze, clock_t start) {
     // char fileMaze[100];
     // printf("Input maze file name: ");
     // scanf("%s", fileMaze);
 
     printf("\nAnalyzing maze...");
-
-    clock_t start = clock();
 
     FILE *file = fopen("Maze Analysis.txt", "w+");
     if (!file) {
@@ -111,7 +109,7 @@ int main_backtracking(char *fileMaze) {
     return 0;
 }
 
-int main_bfs(char *namafile, int mode) {
+int main_bfs(char *namafile, int mode, clock_t start_time) {
     // char namafile[10];
     // printf("Masukkan nama file: ");
     // scanf("%s", namafile);
@@ -147,12 +145,12 @@ int main_bfs(char *namafile, int mode) {
     enqueue(queue, head);
     system("cls");
 
-    solveBFS(queue, maze, row, column, end, mode);
+    solveBFS(queue, maze, row, column, end, mode, start_time);
     clock_t e_time = clock();
     return 0;
 }
 
-int main_dfs(char *txt) {
+int main_dfs(char *txt, clock_t start) {
     FILE *allPath = fopen("allPath.txt", "w");
     fprintf(allPath, "");
     fclose(allPath);
@@ -163,7 +161,7 @@ int main_dfs(char *txt) {
     resetMap(labirin);
     // printf("Masukkan File Txt Struktur Maze : ");
     // scanf("%s", txt );
-    clock_t start = clock();
+    // clock_t start = clock();
     if (!bacaLabirin(txt, labirin, &baris, &kolom)) {
         return 1; // Exit jika file tidak bisa dibuka
     }
@@ -208,12 +206,13 @@ int main_dfs(char *txt) {
 
     if (pathquantity > 0){ // jika tidak ada path maka tidak print shortest, dan longest
         printf("The shortest path is : \n ");
-        tracing (labirin, tempxend, tempyend, baris, kolom);
+        tracing (labirin, tempxend, tempyend, baris, kolom, 0);
 
         resetMap(labirin);
         bacaLabirin(txt, labirin, &baris, &kolom);
         
         printf("The longest path is:\n");
+        printf("Length = %d | ", longestPathLength);
         for (int i = 0; i < longestPathLength; i++) {
             if (i < longestPathLength -1){
                 printf("(%d, %d) -> ", longestPath[i][0], longestPath[i][1]);
@@ -231,8 +230,8 @@ int main_dfs(char *txt) {
     return 0;
 }
 
-int main_dijkstra(char *filename) {
-    clock_t short_start, short_end;
+int main_dijkstra(char *filename, clock_t short_start) {
+    clock_t short_end;
     double time_short;
 
     // char filename[MAX_ROW];
@@ -241,7 +240,6 @@ int main_dijkstra(char *filename) {
 
     // printf("Masukkan nama file: ");
     // scanf("%s", filename);
-    short_start = clock();
 
     readMazeFile(filename, maze, &rows, &cols);
 
@@ -284,7 +282,7 @@ int main_dijkstra(char *filename) {
     return 0;
 }
 
-int main_greedy(char *filename) {
+int main_greedy(char *filename, clock_t waktu_awal) {
     FILE *file;
     // char filename[100];
     char maze[MAX][MAX];
@@ -292,7 +290,7 @@ int main_greedy(char *filename) {
     Point_Greedy start, end;
     Path_Greedy paths[MAX];
     int pathCount = 0;
-    clock_t waktu_awal, waktu_akhir;
+    clock_t waktu_akhir;
     double waktu;
 
     // printf("Masukkan nama file: ");
@@ -393,11 +391,11 @@ int main() {
     switch (menu) {
         case 1:
             start_time = clock();
-            main_dijkstra(namafile);
+            main_dijkstra(namafile, start_time);
             break;
         case 2:
             start_time = clock();
-            main_dfs(namafile);
+            main_dfs(namafile, start_time);
             break;
         case 3:
             int mode;
@@ -415,19 +413,19 @@ int main() {
                 }
             } while (mode != 1 && mode != 2 && mode != 3);
             start_time = clock();
-            main_bfs(namafile, mode);
+            main_bfs(namafile, mode, start_time);
             break;
         case 4:
             start_time = clock();
-            main_astar(namafile);
+            main_astar(namafile, start_time);
             break;
         case 5:
             start_time = clock();
-            main_backtracking(namafile);
+            main_backtracking(namafile, start_time);
             break;
         case 6:
             start_time = clock();
-            main_greedy(namafile);
+            main_greedy(namafile, start_time);
             break;
     }
     end_time = clock();
